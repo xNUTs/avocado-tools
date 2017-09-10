@@ -1,0 +1,7 @@
+name 					xml
+src 					.
+main 					xml.js
+version 			1.0.0
+minify				true
+desc					'xml'
+time 					2015-05-22
