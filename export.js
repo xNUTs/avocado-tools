@@ -38,6 +38,7 @@ var AvocadoBuild = require('./build').AvocadoBuild;
 var get_local_network_host = require('./network_host').get_local_network_host;
 var syscall = require('./syscall');
 var child_process = require('child_process');
+var large_file_merge = require('./large_file_cut').merge;
 
 var native_source = [
 	'.c',
@@ -689,9 +690,13 @@ var AvocadoExport = util.class('AvocadoExport', {
 		this.m_lib_output = { };
 		this.m_default_includes = { };
 
-		function copy(p) { 
-			var pathname = self.m_output + '/avocado/' + path.basename(p);
+		function copy(p) {
+			var basename = path.basename(p);
+			var pathname = self.m_output + '/avocado/' + basename;
 			fs.cp_sync(p, pathname, { replace: false });
+			if ( os == 'ios' && basename == 'ios' ) { // merge Framework
+				large_file_merge(`${pathname}/Frameworks/Avocado.framework/Avocado`, {remove_source: 1});
+			}
 			return path.relative(self.m_output, pathname);
 		}
 		// copy bundle resources and includes and librarys

@@ -127,8 +127,8 @@ public:
   virtual int  ref_count() const;
   virtual bool retain();
   virtual void release();
-  static void* operator new(size_t size);
-  static void* operator new(size_t size, void* p);
+  static void* operator new (std::size_t size);
+  static void* operator new (std::size_t size, void* p);
   static void  operator delete(void* p);
 #if av_memory_trace_mark
   static std::vector<Object*> mark_objects();
