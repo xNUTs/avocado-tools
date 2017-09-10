@@ -371,9 +371,9 @@ var EventNoticer = util.class('EventNoticer', {
 
 
 /**
- * @class Responder
+ * @class Notification
  */
-var Responder = util.class('Responder', {
+var Notification = util.class('Notification', {
   
   /**
    * @func get_noticer
@@ -516,16 +516,16 @@ function init_events(self) {
 
 /**
  * @func all_noticer # Get all event noticer
- * @arg responder {Responder}
+ * @arg Notification {Notification}
  * @ret {Array}
  */
-function all_noticer(responder) {
+function all_noticer(notification) {
   var result = [];
   var reg = /^on/;
   
-  for ( var i in responder ) {
+  for ( var i in notification ) {
     if ( reg.test(i) ) {
-      var noticer = responder[i];
+      var noticer = notification[i];
       if ( noticer instanceof EventNoticer ) {
         result.push(noticer);
       }
@@ -536,6 +536,6 @@ function all_noticer(responder) {
 
 exports.Event = Event;
 exports.EventNoticer = EventNoticer;
-exports.Responder = Responder;
+exports.Notification = Notification;
 exports.init_events = init_events;
 exports.all_noticer = all_noticer;

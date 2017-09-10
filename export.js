@@ -690,19 +690,39 @@ var AvocadoExport = util.class('AvocadoExport', {
 		this.m_lib_output = { };
 		this.m_default_includes = { };
 
-		function copy(p) {
-			var basename = path.basename(p);
-			var pathname = self.m_output + '/avocado/' + basename;
-			fs.cp_sync(p, pathname, { replace: false });
-			if ( os == 'ios' && basename == 'ios' ) { // merge Framework
-				large_file_merge(`${pathname}/Frameworks/Avocado.framework/Avocado`, {remove_source: 1});
-			}
-			return path.relative(self.m_output, pathname);
+		function copy(source) {
+			var target = self.m_output + '/avocado/' + path.basename(source);
+			fs.cp_sync(source, target, { replace: false });
+			return path.relative(self.m_output, target);
 		}
 		// copy bundle resources and includes and librarys
 		this.m_bundle_resources = export_paths.bundle_resources.map(copy);
 		export_paths.includes.map(copy);
-		(export_paths.librarys[os] || []).map(copy);
+
+		var librarys = export_paths.librarys[os] || [];
+		if ( os == 'ios' ) {
+			librarys.map(function(source) {
+				var basename = path.basename(source);
+				var target = self.m_output + '/avocado/' + basename;
+				if ( basename == 'ios' ) { // merge Framework
+					fs.cp_sync(source, target, {
+						replace: false, 
+						check: function(path) {
+							return path.indexOf('Avocado.framework/Avocado.') == -1;
+						},
+					});
+					// 合并Avocado.framework/Avocado
+					target = `${target}/Frameworks/Avocado.framework/Avocado`;
+					if (!fs.existsSync(target)) { // 目标不存在进行合并
+						large_file_merge(`${source}/Frameworks/Avocado.framework/Avocado`, { target: target });
+					}
+				} else {
+					fs.cp_sync(source, target, { replace: false });
+				}
+			});
+		} else {
+			librarys.map(copy);
+		}
 
 		var app_keys = this.m_source + '/app.keys';
 

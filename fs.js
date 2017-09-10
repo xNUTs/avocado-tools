@@ -52,6 +52,10 @@ function inl_copy_file(path, target, cancel_handle, options, cb) {
 		return;
 	}
 
+	if (cancel_handle.is_cancel) {
+		return;
+	}
+
 	var read = exports.createReadStream(path);
 	var write = exports.createWriteStream(target);
 
@@ -129,13 +133,15 @@ function inl_copy_dir(path, target, cancel_handle, options, cb) {
   });
 }
 
-function inl_copy_file_sync(path, target, options, caneal_cb) {
+function inl_copy_file_sync(path, target, options, check) {
 
 	if ( !options.replace ) { // 如果存在不替换
 		if ( fs.existsSync(target) ) {
 			return; // 结束
 		}
 	}
+
+	if (!check(path, target)) return; // 取消
 
   var rfd = fs.openSync(path, 'r');
   var wfd = fs.openSync(target, 'w');
@@ -145,7 +151,7 @@ function inl_copy_file_sync(path, target, options, caneal_cb) {
   var len = 0;
   
   do {
-    if (caneal_cb(path, target)) break; // 取消
+    if (!check(path, target)) break; // 取消
     len = fs.readSync(rfd, buff, 0, size, null);
     fs.writeSync(wfd, buff, 0, len, null);
   } while (len == size);
@@ -154,8 +160,8 @@ function inl_copy_file_sync(path, target, options, caneal_cb) {
   fs.closeSync(wfd);
 }
 
-function inl_copy_dir_sync (path, target, options, caneal_cb) {
-  if (caneal_cb(path, target)) 
+function inl_copy_dir_sync (path, target, options, check) {
+  if (!check(path, target)) 
     return; // 取消
   
   if (!fs.existsSync(target)) { // 创建目录
@@ -174,10 +180,10 @@ function inl_copy_dir_sync (path, target, options, caneal_cb) {
     var stat = fs.statSync(path2);
     
     if (stat.isFile()) {
-      inl_copy_file_sync(path2, target2, options, caneal_cb);
+      inl_copy_file_sync(path2, target2, options, check);
     } 
     else if (stat.isDirectory()) {
-      inl_copy_dir_sync(path2, target2, options, caneal_cb);
+      inl_copy_dir_sync(path2, target2, options, check);
     }
   }
 }
@@ -445,22 +451,18 @@ exports.cp = function (path, target, options, cb) {
   * @param {String}   path
   * @param {String}   target
   * @param {Object}   options  (Optional)
-  * @param {Function} caneal_cb   (Optional)
   */
-exports.cp_sync = function (path, target, options, caneal_cb) {
+exports.cp_sync = function (path, target, options) {
   path = Path.resolve(path);
   target = Path.resolve(target);
   
-  if (typeof options == 'function') {
-    caneal_cb = options;
-    options = null;
-  }
   options = util.ext({ 
     ignore_hide: false, // 忽略隐藏
     replace: true, // 如果存在替换目标
+    check: function() { return true; },
   }, options);
   
-  caneal_cb = caneal_cb || util.noop;
+  var check = options.check;
   
   if (options.ignore_hide && Path.basename(path)[0] == '.')
     return; // 忽略隐藏
@@ -470,10 +472,10 @@ exports.cp_sync = function (path, target, options, caneal_cb) {
   exports.mkdir_p_sync(Path.dirname(target));
   
   if (stat.isFile()) {
-    inl_copy_file_sync(path, target, options, caneal_cb);
+    inl_copy_file_sync(path, target, options, check);
   } 
   else if (stat.isDirectory()) {
-    inl_copy_dir_sync(path, target, options, caneal_cb);
+    inl_copy_dir_sync(path, target, options, check);
   }
 };
 
