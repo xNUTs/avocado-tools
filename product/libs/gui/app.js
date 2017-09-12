@@ -71,6 +71,17 @@ function start(self, vx) {
   * @arg [options] {Object} { anisotropic {bool}, mipmap {bool}, multisample {0-4} }
   *
   * @func clear() clear gui application resources
+  *
+  * @func open_url(url)
+  * @arg url {String}
+  *
+  * @func send_email(recipient[,subject[,cc[,bcc[,body]]]])
+  * @arg recipient {String}
+  * @arg subject {String}
+  * @arg [cc] {String}
+  * @arg [bcc] {String}
+  * @arg [body] {String}
+  *
   * @get is_load {bool}
   * @get display_port {DisplayPort}
   * @get root {Root}

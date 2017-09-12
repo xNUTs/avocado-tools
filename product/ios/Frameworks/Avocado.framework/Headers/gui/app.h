@@ -167,7 +167,21 @@ public:
   void set_default_text_decoration(TextDecoration value);
   void set_default_text_overflow(TextOverflow value);
   void set_default_text_white_space(TextWhiteSpace value);
-
+  
+  /**
+   * @func open_url()
+   */
+  void open_url(cString& url);
+  
+  /**
+   * @func send_email
+   */
+  void send_email(cString& recipient,
+                  cString& subject,
+                  cString& cc = String(),
+                  cString& bcc = String(),
+                  cString& body = String());
+  
 protected:
   
   /**

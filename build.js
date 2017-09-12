@@ -234,6 +234,7 @@ function action_lib1(self, pathname, target_local, target_public, ignore_public,
   self.m_cur_lib_target_local_src = target_local_src;
   self.m_cur_lib_target_public_src= target_public_src;
   self.m_cur_lib_keys             = lib_keys;
+  self.m_cur_lib_no_jsa           = !!lib_keys.no_jas;
   self.m_cur_lib_files            = { };
   self.m_cur_lib_avlib_files      = { };
   self.m_cur_lib_skip_file        = get_skip_files(self, lib_keys, name);
@@ -396,31 +397,36 @@ function action_build_file(self, pathname) {
     case '.js':
     case '.jsx':
       console_log(self, 'Out ', pathname);
-      jsa_shell(source, source + 'c');
-      data = read_file_text(self, source + 'c');
-      fs.rm_sync(source + 'c');
-      
-      if ( self.m_cur_lib_enable_minify ) {
-        var minify = uglify.minify(data.value, {
-          toplevel: true, 
-          keep_fnames: false,
-          mangle: { 
+
+      if ( self.m_cur_lib_no_jsa ) { // 不进行jsa转换,直接使用原始代码
+        data = read_file_text(self, source);
+      } else {
+        jsa_shell(source, source + 'c');
+        data = read_file_text(self, source + 'c');
+        fs.rm_sync(source + 'c');
+        
+        if ( self.m_cur_lib_enable_minify ) {
+          var minify = uglify.minify(data.value, {
             toplevel: true, 
-            reserved: [ '$' ], 
-            keep_classnames: true,
-          },
-          output: { ascii_only: true } 
-        });
-        if ( minify.error ) {
-          var err = minify.error;
-          err = new SyntaxError(
-            `${err.message}\n` +
-            `line: ${err.line}, col: ${err.col}\n` +
-            `filename: ${source}`
-          );
-          throw err;
+            keep_fnames: false,
+            mangle: { 
+              toplevel: true, 
+              reserved: [ '$' ], 
+              keep_classnames: true,
+            },
+            output: { ascii_only: true } 
+          });
+          if ( minify.error ) {
+            var err = minify.error;
+            err = new SyntaxError(
+              `${err.message}\n` +
+              `line: ${err.line}, col: ${err.col}\n` +
+              `filename: ${source}`
+            );
+            throw err;
+          }
+          data.value = minify.code;
         }
-        data.value = minify.code;
       }
       
       fs.mkdir_p_sync( path.dirname(target_local) ); // 先创建目录
@@ -548,6 +554,7 @@ var AvocadoBuild = util.class('AvocadoBuild', {
   m_cur_lib_target_local_src  : '',
   m_cur_lib_target_public_src : '',
   m_cur_lib_keys              : null,
+  m_cur_lib_no_jsa            : false,
   m_cur_lib_files             : null,
   m_cur_lib_avlib_files       : null,
   m_cur_lib_detach_file       : null,

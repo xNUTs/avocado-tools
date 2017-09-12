@@ -741,15 +741,16 @@ function add_proxy_event(self, noticer, name) {
 
     var view = self.view;
     util.assert(view, 'View not found');
+    
+    var name2 = 'on' + name;
 
-    if ( 'on' + name in view ) { // 
+    if ( name2 in view ) { // 
       if ( !noticer ) {
         self['__on' + name] = noticer = new EventNoticer(name, this);
       }
-
       var trigger = self['trigger_' + name];
       
-      proxys[name] = view.on(name, (evt) => {
+      proxys[name] = view[name2].on((evt) => {
         var origin_noticer = evt.m_noticer;
         trigger.call(self, evt, 1);
         evt.m_noticer = origin_noticer;

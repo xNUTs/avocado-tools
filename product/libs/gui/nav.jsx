@@ -1042,7 +1042,9 @@ export class Navpage extends Navigation {
   
   // @overwrite
   into_background(time) {
+    console.log( this.next_page == null ? 'null' : 'noo null' )
     if ( this.next_page == null ) return;
+    console.log( 'natpage into_background' )
     this.navbar.into_background(time);
     this.toolbar.into_background(time);
     if ( this.status != 1 ) {
@@ -1060,6 +1062,7 @@ export class Navpage extends Navigation {
     if ( this.status == 0 ) return;
     this.navbar.into_foreground(time, action, data);
     this.toolbar.into_foreground(time, action, data);
+    this.m_next_page = null;
     if ( this.status == -1 ) {
       if ( time && this.view.parent.final_visible ) {
         this.style = { 

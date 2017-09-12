@@ -78,7 +78,7 @@ typedef unsigned long long int uint64;
 #endif
 
 #define av_default_allocator() \
-static void* operator new(size_t size) { return ::operator new(size); } \
+static void* operator new(std::size_t size) { return ::operator new(size); } \
 static void  operator delete(void* p) { ::operator delete(p); } \
 virtual void release() { static_assert(!Traits::is_reference, ""); ::delete this; }
 

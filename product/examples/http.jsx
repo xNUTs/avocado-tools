@@ -10,7 +10,8 @@ function url(evt) {
 
 function Get(evt) {
 	http.get(url(evt), function(buf) {
-		alert(buf.to_string('utf-8').substr(0, 200).trim() + '...');
+		var content = buf.to_string('utf-8');
+		alert(content.substr(0, 200).trim() + '...');
 	}.catch(function(err) {
 		alert(err.message);
 	}));
@@ -52,6 +53,7 @@ export const vx = (
     	<Input class="input" id="input" 
     		placeholder="Please enter http url .." 
     		value="https://github.com/"
+    		//value="http://192.168.1.11:1026/Tools/test_timeout?1"
     		return_type="done" onkeyenter=keyenter />
       <Button class="long_btn" onclick=Get>Get</Button>
       <Button class="long_btn" onclick=Post>Post</Button>

@@ -33,7 +33,7 @@ CSS({
   
   '.next_btn': {
     width: "full",
-    text_line_height: 46,
+    text_line_height: 45,
     text_align: "left",
     border_radius: 0,
   },
@@ -70,8 +70,8 @@ export class Navbutton extends ViewController {
         class="next_btn"
         text_color="#0079ff"
         default_highlighted=0
-        border_bottom=`${atom_px} #ccc`>
-        <Text margin_left=10 margin_right=40>${vx}</Text>
+        border_bottom=`${atom_px} #c8c7cc`>
+        <Text margin_left=16 margin_right=50>${vx}</Text>
         <Indep x=-10 align_x="right" align_y="center">
           <Text value="\uedbe" text_family="icon" text_color="#aaa" />
         </Indep>
@@ -95,9 +95,10 @@ export class Navbutton extends ViewController {
 
 export class Mynavpage extends Navpage {
   source: $(__filename);
-
+  
   load_view(vx) {
     super.load_view(vx);
+    this.background_color = "#f8f8f8";
     <!-- White title -->
     <!--
       gui.display_port.set_status_bar_style(1);

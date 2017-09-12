@@ -283,7 +283,7 @@ var HttpService = util.class('HttpService', StaticService, {
 		var res = this.response;
 		var ae = this.request.headers['accept-encoding'];
     
-		this.set_default_header();
+		this.set_default_header(0);
 		res.setHeader('Content-Type', type);
     
 		if (typeof data == 'string' && 

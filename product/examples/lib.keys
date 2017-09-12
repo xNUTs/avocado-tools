@@ -2,3 +2,4 @@ name 			examples
 app_name	Examples
 id 				org.avocado.examples
 main			index.jsx
+no_jsa 		true

@@ -3,8 +3,8 @@ import { AudioPlayer, Video } from ':gui/media';
 import Mynavpage from 'public.jsx';
 import ':util/path';
 
-const src_720 = $('piper720p.mp4');
-const audio_src = $('all_we_know.mp3');
+const src_720 = 'http://avocadojs.org/media/2017-09-11_15_41_19.mp4';
+const audio_src = 'http://avocadojs.org/media/all_we_know.mp3';
 
 var audio_player = null;
 
