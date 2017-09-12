@@ -10,19 +10,27 @@ function keyenter(evt) {
 }
 
 function Get(evt) {
-	alert(storage.get(key));
+  var val = storage.get(key);
+  if ( val ) {
+    alert(storage.get(key));
+  } else {
+    alert('No local storage data！');
+  }
 }
 
 function Set(evt) {
 	storage.set(key, evt.sender.top_ctr.find('input').value);
+  alert('Save local data OK.');
 }
 
 function Del(evt) {
 	storage.del(key);
+  alert('Delete local data OK.');
 }
 
 function Clear(evt) {
 	storage.clear(key);
+  alert('Delete All local data OK.');
 }
 
 export const vx = (

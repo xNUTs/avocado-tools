@@ -8,7 +8,7 @@ const filename = path.documents('test.txt');
 
 function WriteFile(evt) {
 	fs.write_file(filename, evt.sender.top_ctr.find('input').value, function() {
-		alert('Write OK.');
+		alert('Write file OK.');
 	}.catch(function(err) {
 		alert(err.message);
 	}));
@@ -17,7 +17,7 @@ function WriteFile(evt) {
 function WriteFileSync(evt) {
 	try {
 		fs.write_file_sync(filename, evt.sender.top_ctr.find('input').value);
-		alert('Write OK.');
+		alert('Write file OK.');
 	} catch (err) {
 		alert(err.message);
 	}
@@ -34,7 +34,7 @@ function ReadFile(evt) {
 function Remove(evt) {
 	try {
 		fs.rm_r_sync(filename);
-		alert('Remove OK.');
+		alert('Remove file OK.');
 	} catch (err) {
 		alert(err.message);
 	}
