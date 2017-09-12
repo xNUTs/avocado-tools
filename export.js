@@ -79,6 +79,7 @@ function Library_gen_ios_gypi(self) {
 	var sources = self.sources;
 	var id = self.lib_keys.id || 'com.mycompany.${PRODUCT_NAME:rfc1034identifier}';
 	var app_name = self.lib_keys.app_name || '${EXECUTABLE_NAME}';
+	var version = self.lib_keys.version;
 	var xcode_settings = { };
 
 	if ( is_app ) { // copy platfoem file
@@ -101,11 +102,13 @@ function Library_gen_ios_gypi(self) {
 		
 		// .plist
 		fs.cp_sync(template + 'main.plist', plist, { replace: false });
-		str = fs.readFileSync(template + 'main.plist').toString('utf8');
+		str = fs.readFileSync(plist).toString('utf8');
 		var reg0 = /(\<key\>CFBundleIdentifier\<\/key\>\n\r?\s*\<string\>)([^\<]+)(\<\/string\>)/;
 		var reg1 = /(\<key\>CFBundleDisplayName\<\/key\>\n\r?\s*\<string\>)([^\<]+)(\<\/string\>)/;
+		var reg2 = /(\<key\>CFBundleShortVersionString\<\/key\>\n\r?\s*\<string\>)([^\<]+)(\<\/string\>)/;
 		str = str.replace(reg0, function(a,b,c,d) { return b + id + d });
 		str = str.replace(reg1, function(a,b,c,d) { return b + app_name + d });
+		if (version) str = str.replace(reg2, function(a,b,c,d) { return b + version + d });
 		str = str.replace('[Storyboard]', name);
 		fs.writeFileSync( plist, str );
 		// .storyboard
@@ -163,11 +166,12 @@ function Library_gen_android_gypi(self) {
 	var name = self.name;
 	var host = self.host;
 	var sources = self.sources;
-	var id = self.lib_keys.id || 'com.mycompany.' + name;
+	var id = (self.lib_keys.id || 'com.mycompany.' + name).replace(/-/gm, '_');
 	var app_name = self.lib_keys.app_name || name;
+	var version = self.lib_keys.version;
 	var java_pkg = id.replace(/\./mg, '/');
 	var so_lib = self.native || self.depe_native ? name : 'avocado';
-
+	
 	if ( is_app ) { // copy platfoem file
 		var proj_out = host.m_proj_out;
 		var app = proj_out + '/' + name;
@@ -208,7 +212,8 @@ function Library_gen_android_gypi(self) {
 		// build.gradle
 		str = fs.readFileSync(build_gradle).toString('utf8');
 		str = str.replace(/\{id\}/, id);
-		str = str.replace(/applicationId\s('|")[^\'\"]+('|")/, `applicationId '${id}'`);
+		str = str.replace(/applicationId\s+('|")[^\'\"]+('|")/, `applicationId '${id}'`);
+		if (version) str = str.replace(/versionName\s+('|")[^\'\"]+('|")/, `versionName '${version}'`);
 		fs.writeFileSync(build_gradle, str);
 	}
 
@@ -711,11 +716,13 @@ var AvocadoExport = util.class('AvocadoExport', {
 							return path.indexOf('Avocado.framework/Avocado.') == -1;
 						},
 					});
-					// 合并Avocado.framework/Avocado
-					target = `${target}/Frameworks/Avocado.framework/Avocado`;
-					if (!fs.existsSync(target)) { // 目标不存在进行合并
-						large_file_merge(`${source}/Frameworks/Avocado.framework/Avocado`, { target: target });
-					}
+					// merge Avocado.framework/Avocado 
+					[ 'iphonesimulator', 'iphoneos' ].forEach(function(sdk) {
+						var pathname = `${target}/${sdk}/Frameworks/Avocado.framework/Avocado`;
+						if (!fs.existsSync(pathname)) { // 目标不存在进行合并
+							large_file_merge(`${source}/${sdk}/Frameworks/Avocado.framework/Avocado`, { target: pathname });
+						}
+					});
 				} else {
 					fs.cp_sync(source, target, { replace: false });
 				}

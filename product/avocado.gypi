@@ -57,7 +57,7 @@
           ],
           'ENABLE_BITCODE': 'YES',
           'CLANG_ENABLE_OBJC_ARC': 'YES',
-          'VALID_ARCHS': ['arm64', 'x86_64'],
+          'VALID_ARCHS': ['arm64'],
         },
         'cflags_cc': [ '-stdlib=libc++' ], 
       }],
@@ -133,16 +133,16 @@
       ['OS=="ios"', {
         'link_settings': { 
           'libraries': [ 
-            '<(DEPTH)/out/avocado/ios/Frameworks/Avocado.framework',
+            '<(DEPTH)/out/avocado/ios/$(PLATFORM_NAME)/Frameworks/Avocado.framework',
             '$(SDKROOT)/System/Library/Frameworks/UIKit.framework',
           ],
         },
         'direct_dependent_settings': {
           'mac_framework_dirs': [
-            '<(DEPTH)/out/avocado/ios/Frameworks',
+            '<(DEPTH)/out/avocado/ios/$(PLATFORM_NAME)/Frameworks',
           ],
           'mac_bundle_frameworks': [
-            '<(DEPTH)/out/avocado/ios/Frameworks/Avocado.framework',
+            '<(DEPTH)/out/avocado/ios/$(PLATFORM_NAME)/Frameworks/Avocado.framework',
           ],
         },
       }],
