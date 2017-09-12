@@ -234,7 +234,7 @@ function action_lib1(self, pathname, target_local, target_public, ignore_public,
   self.m_cur_lib_target_local_src = target_local_src;
   self.m_cur_lib_target_public_src= target_public_src;
   self.m_cur_lib_keys             = lib_keys;
-  self.m_cur_lib_no_jsa           = !!lib_keys.no_jas;
+  self.m_cur_lib_no_jsa           = !!lib_keys.no_jsa;
   self.m_cur_lib_files            = { };
   self.m_cur_lib_avlib_files      = { };
   self.m_cur_lib_skip_file        = get_skip_files(self, lib_keys, name);
