@@ -1,6 +1,6 @@
 {
   "name": "avocado-tools",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Used C/C++/OpenGL/javascript to implement a GUI typesetting display engine and cross platform GUI application development framework\nGoal: developing GUI applications on this basis can take into account both the simplicity and speed of developing WEB applications, as well as the performance and experience of Native applications.",
   "author": {
     "name": "xuewen.chu",
