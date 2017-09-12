@@ -70,6 +70,7 @@ function review_code(evt) {
 }
 
 const avocado_tools = 'https://github.com/louis-tru/avocado-tools.git';
+const avocado_tools_issues_url = 'https://github.com/louis-tru/avocado-tools/issues';
 const examples_source = 'https://github.com/louis-tru/avocado-demo.git';
 const documents = 'http://avocadojs.org/';
 
@@ -98,8 +99,8 @@ var avocado_tools_vx = (
   <Mynavpage title="Avocado tools" source=$(__filename)>
     <Div width="full">
       <Hybrid class="category_title">
-@@1. You can use nodejs <T text_background_color="#ddd">npm install -g avocado-tools</T>
-2. Or get the node modules from Github@@
+@@1. You can use nodejs <T text_background_color="#ddd">npm install -g avocado-tools</T>.
+2. Or get the node modules from Github.@@
       </Hybrid>
       <Button class="long_btn rm_margin_top" onclick=handle_go_to url=avocado_tools>Go Github</Button>
     </Div>
@@ -109,7 +110,7 @@ var avocado_tools_vx = (
 const examples_source_vx = (
   <Mynavpage title="Examples source" source=$(__filename)>
     <Div width="full">
-      <Text class="category_title">You can get the full examples source code from Github</Text>
+      <Text class="category_title">You can get the full examples source code from Github.</Text>
       <Button class="long_btn rm_margin_top" onclick=handle_go_to url=examples_source>Go Github</Button>
     </Div>
   </Mynavpage>
@@ -119,7 +120,18 @@ var documents_vx = (
   <Mynavpage title="Documents" source=$(__filename)>
     <Div width="full">
       <Hybrid class="category_title">Now go to <T text_color="#0079ff">avocadojs.org</T> to view the document?</Hybrid>
-      <Button class="long_btn" onclick=handle_go_to url=documents>Go Documents</Button>
+      <Button class="long_btn rm_margin_top" onclick=handle_go_to url=documents>Go Documents</Button>
+    </Div>
+  </Mynavpage>
+)
+
+const bug_feedback_vx = (
+  <Mynavpage title="Bug Feedback" source=$(__filename)>
+    <Div width="full">
+      <Hybrid class="category_title">Now go to Github issues list?</Hybrid>
+      <Button class="long_btn rm_margin_top" onclick=handle_go_to url=avocado_tools_issues_url>Go Github Issues</Button>
+      <Hybrid class="category_title">Or you can send me email, too.</Hybrid>
+      <Button class="long_btn rm_margin_top" onclick=handle_bug_feedback>Send email</Button>
     </Div>
   </Mynavpage>
 )
@@ -153,7 +165,7 @@ var app = new GUIApplication({ multisample: 2, mipmap: 1 }).start(
           <Clip class="category">
           	<Navbutton next=about.vx>About</Navbutton>
             <Navbutton next=documents_vx>Documents</Navbutton>
-            <Navbutton onclick=handle_bug_feedback view.border_width=0>Bug Feedback</Navbutton>
+            <Navbutton next=bug_feedback_vx view.border_width=0>Bug Feedback</Navbutton>
 		      </Clip>
 
           <Div height=32 width="full" />
