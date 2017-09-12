@@ -1042,9 +1042,9 @@ export class Navpage extends Navigation {
   
   // @overwrite
   into_background(time) {
-    console.log( this.next_page == null ? 'null' : 'noo null' )
+    //console.log( this.next_page == null ? 'null' : 'no null' )
     if ( this.next_page == null ) return;
-    console.log( 'natpage into_background' )
+    //console.log( 'natpage into_background' )
     this.navbar.into_background(time);
     this.toolbar.into_background(time);
     if ( this.status != 1 ) {
