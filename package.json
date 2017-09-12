@@ -1,10 +1,39 @@
 {
   "name": "avocado-tools",
-  "description": "Avocado Tools",
- 	"version": "0.1.0",
-  "author": "louistru@hotmail.com",
+  "version": "0.1.0",
+  "description": "Used C/C++/OpenGL/javascript to implement a GUI typesetting display engine and cross platform GUI application development framework\nGoal: developing GUI applications on this basis can take into account both the simplicity and speed of developing WEB applications, as well as the performance and experience of Native applications.",
+  "author": {
+    "name": "xuewen.chu",
+    "email": "louistru@hotmail.com",
+    "url": "http://avocadojs.org/"
+  },
   "main": "tools.js",
   "bin": {
     "avocado": "bin/shell.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/louis-tru/avocado-tools.git"
+  },
+  "keywords": [
+    "js",
+    "jsx",
+    "javascript",
+    "ecmascript",
+    "html5",
+    "gui",
+    "ui",
+    "native",
+    "es6",
+    "es7",
+    "es2017"
+  ],
+  "dependencies": {
+    "marked": "~0.3.6",
+    "uglify-es": "~3.0.28"
+  },
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/louis-tru/avocado-tools/issues"
   }
 }
