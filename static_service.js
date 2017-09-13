@@ -70,7 +70,7 @@ function isGzip(self, filename) {
 }
 
 //返回目录
-function _returnDirectory (self, filename) {
+function _returnDirectory(self, filename) {
 	if(self.server.auto_index) {
 		self.ret_dir(filename);
 	} else {
@@ -79,7 +79,7 @@ function _returnDirectory (self, filename) {
 }
 
 //返回目录
-function returnDirectory (self, filename) {
+function returnDirectory(self, filename) {
 
 	//读取目录
 	if (!filename.match(/\/$/))  // 目录不正确,重定向

@@ -36,18 +36,8 @@ var path = require('../path');
 var fs = require('../fs');
 var keys = require('../keys');
 var Buffer = require('buffer').Buffer;
-var marked = require('marked');
 var remote_log = require('./remote_log');
-var marked_template = null;
-
-function format_marked_text(data) {
-	if ( !marked_template ) {
-		marked_template = fs.readFileSync(__dirname + '/../marked/template.html');
-		marked_template = marked_template.toString('utf-8');
-	}
-	var marked_data = marked(data.toString('utf-8'));
-	return marked_template.replace('__placeholder__', marked_data);
-}
+var gen_html = require('../marked/html').gen_html;
 
 var File = util.class('File', HttpService, {
 
@@ -57,7 +47,8 @@ var File = util.class('File', HttpService, {
     remote_log.remote_log_print(log);
     if ( /.+\.(mdown|md)/i.test(this.pathname) ) {
     	return this.marked(this.pathname);
-    } else if ( /\/libs.keys$/.test(this.pathname) ) {
+    } 
+    else if ( /\/libs.keys$/.test(this.pathname) ) {
     	return this.libs_keys(this.pathname);
     }
     HttpService.members.action.call(this, info);
@@ -100,15 +91,16 @@ var File = util.class('File', HttpService, {
 				res.end(); 
 				return;
 			}
-
+			
 			fs.readFile(filename, function(err, data) {
 				if (err) {
 					return self.ret_status(404);
 				}
+				// template, title, text_md, no_index
 				var res = self.response;
-				var marked_data = format_marked_text(data);
+				var html = gen_html(data.toString('utf8')).html;
 				res.writeHead(200);
-			  res.end(marked_data);
+			  res.end(html);
 			});
 
 		});

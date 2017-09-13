@@ -291,7 +291,7 @@ code.pre {
 }
 
 #intro a {
-  color: #ddd;
+  /*color: #ddd;*/
   font-size: 1.25em;
   font-weight: bold;
 }
@@ -441,6 +441,17 @@ a code {
 #column2 ul li a:hover, #column2 ul li a:focus {
   color: #fff;
   background: none;
+}
+
+#column2 h1 {
+  color: #ddd;
+  font-size: 1.25em;
+  margin-left: 0.8em;
+  margin-right: 0.8em;
+}
+
+#column2 h1 span {
+  display: none;
 }
 
 span > .mark, span > .mark:visited {

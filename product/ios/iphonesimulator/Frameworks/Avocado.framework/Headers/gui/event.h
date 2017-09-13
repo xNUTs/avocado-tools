@@ -260,7 +260,7 @@ private:
 };
 
 /**
- * @class GUISwitchEvent
+ * @class GUIFocusMoveEvent
  */
 class AV_EXPORT GUIFocusMoveEvent: public GUIEvent {
 public:

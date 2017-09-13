@@ -9,6 +9,7 @@ server
 	max_file_size 				1073741824 # 1024 * 1024 * 1024
 	max_form_data_size		52428800 # 50 * 1024 * 1024
 	max_upload_file_size 	52428800 # 50 * 1024 * 1024
+	#expires	0
 	router
 		,
 			match			/$console/{action}/{args}

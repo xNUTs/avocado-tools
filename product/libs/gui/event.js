@@ -297,7 +297,7 @@ export binding('_gui_event');
 	*/
 
  /**
-	* @class GUISwitchEvent
+	* @class GUIFocusMoveEvent
 	* @bases {GUIEvent}
 	*
 	* @get focus {View*}
